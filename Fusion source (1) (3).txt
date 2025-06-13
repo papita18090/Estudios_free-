@@ -1,5 +1,5 @@
 local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/xHeptc/Kavo-UI-Library/main/source.lua"))()
-local Window = Library.CreateLib("Poquitoki -- Age of heroes", "DarkTheme");
+local Window = Library.CreateLib("papita free -- Age of heroes public", "Sentinel");
 local TargetTab = Window:NewTab("Players");
 local TargetSection = TargetTab:NewSection("Players");
 local RapidTab = Window:NewTab("Rapid Punch");
@@ -658,25 +658,43 @@ TSection:NewToggle("FARM ZONE #3 [Torre Ingite]", "", function(state)
         getgenv().loopToCoordinates = false -- Detener el bucle
     end
 end)
-StatSection:NewLabel("Habilidades")
-StatSection:NewDropdown("AutoStats", "", {"vitality","healing","strength","energy","flight","speed","climbing","swinging","fireball","frost","lightning","power","telekinesis","shield","laserVision","metalSkin"}, function(currentOption)
-	selectedstat = currentOption;
-end);
-StatSection:NewToggle("Toggle AutoStats 15", "", function(state)
-    if state then
-        getgenv().AutoStats15 = true
-        while getgenv().AutoStats15 do
-            wait(0)
+local function GetAutoStatsList()
+    return {"vitality", "healing", "strength", "energy", "flight", "speed", "climbing", "swinging", "fireball", "frost", "lightning", "power", "telekinesis", "shield", "laserVision", "metalSkin"}
+end
+
+local AutoStatsDropdown = AutoStatsTab:CreateDropdown({
+    Name = "Select AutoStat",
+    Options = GetAutoStatsList(),
+    CurrentOption = {GetAutoStatsList()[1]}, -- Set the default option if needed
+    MultipleOptions = false,
+    Flag = "AutoStatsDropdown",
+    Callback = function(selectedOption)
+        selectedstat = selectedOption[1]
+        -- Additional code if needed when the selected option changes
+    end,
+})
+
+local AutoStatsToggle = AutoStatsTab:CreateToggle({
+    Name = "Toggle AutoStats",
+    CurrentValue = false,
+    Flag = "AutoStatsToggle", -- Make sure each element has a different flag for configuration saving
+    Callback = function(state)
+        if state then
+            getgenv().AutoStats = true;
+            while getgenv().AutoStats do
+                wait(0.1);
+                spawn(function()
+                    -- Modify the line below to call your specific function or service
+                    game:GetService("ReplicatedStorage").Events.UpgradeAbility:InvokeServer(selectedstat);
+                end);
+            end
+        else
             spawn(function()
-                for i = 1, 50 do
-                    game:GetService("ReplicatedStorage").Events.UpgradeAbility:InvokeServer(selectedstat)
-                end
-            end)
+                getgenv().AutoStats = false;
+            end);
         end
-    else
-        getgenv().AutoStats15 = false
-    end
-end)
+    end,
+})
 SSection:NewLabel("Auto Mode punch")
 SSection:NewToggle("AutoPunch x10", "", function(state)
     if state then
