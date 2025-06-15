@@ -1,0 +1,27 @@
+pcall(function()
+    local player = game.Players.LocalPlayer
+
+    -- Función que quita el escudo
+    local function quitarEscudo()
+        local char = player.Character or player.CharacterAdded:Wait()
+        -- Espera unos milisegundos a que aparezca el escudo tras revivir
+        task.wait(0.2)
+        for _, v in pairs(char:GetChildren()) do
+            if v:IsA("ForceField") then
+                v:Destroy()
+                print("Escudo de respawn eliminado.")
+            end
+        end
+    end
+
+    -- Al cambiar de personaje (cuando mueres y reapareces)
+    player.CharacterAdded:Connect(function()
+        task.wait(0.1)
+        quitarEscudo()
+    end)
+
+    -- También al instante por si ya tienes personaje
+    if player.Character then
+        quitarEscudo()
+    end
+end)
