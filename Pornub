@@ -1,5 +1,5 @@
 local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/KermanEstudios2/TrucosGratuitos/main/KAVITOSW"))()
-local Window = Library.CreateLib("|FusionX| -- SUNWARS EDITION)", "Midnight");
+local Window = Library.CreateLib("|SaùlX| -- SUNWARS EDITION)", "Midnight");
 local TargetTab = Window:NewTab("Player Menu");
 local TargetSection = TargetTab:NewSection("Configurations from player");
 local RapidTab = Window:NewTab("|Punch Power|");
