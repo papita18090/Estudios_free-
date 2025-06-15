@@ -1,0 +1,22 @@
+-- Papita AntiEscudo v1 - Quita escudo de muerte al revivir en Age of Heroes
+local player = game.Players.LocalPlayer
+
+-- Función que quita ForceField cuando aparece el personaje
+local function removeDeathShield(char)
+    task.wait(0.3) -- Espera un poco a que el juego lo coloque
+    local ff = char:FindFirstChildOfClass("ForceField")
+    if ff then
+        ff:Destroy()
+        print("Escudo de muerte eliminado.")
+    end
+end
+
+-- Ejecutar si ya estás vivo
+if player.Character then
+    removeDeathShield(player.Character)
+end
+
+-- También eliminarlo al revivir
+player.CharacterAdded:Connect(function(char)
+    removeDeathShield(char)
+end)
